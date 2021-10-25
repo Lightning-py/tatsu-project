@@ -1,0 +1,52 @@
+@@grammar::CALC
+@@eol_comments :: /#([^\n]*?)$/
+
+start
+    =
+    expression $
+    ;
+
+expression
+    =
+    | left:expression op:'+' ~ right:term
+    | left:expression op:'-' ~ right:term
+    | term
+    ;
+
+term
+    =
+    | left:term op:'**' ~ right:factor
+    | left:term op:'*' ~ right:factor
+    | left:term op:'/' ~ right:factor
+    | math_factorial
+    | root
+    | factor
+    ;
+
+math_factorial
+    =
+    op:'!' ~ middle:factor
+    ;
+
+root
+    =
+    left:factor op:'sqr(' ~ right:factor ')'
+    ;
+
+factor
+    =
+    | '(' ~ @:expression ')'
+    | number_float
+    | number_int
+    ;
+
+
+number_float
+    =
+    /\d+\.\d+/
+    ;
+
+number_int
+    =
+    /\d+/
+    ;
