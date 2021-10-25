@@ -1,12 +1,18 @@
 from codecs import open
 from pprint import pprint
 
-from math import factorial
+from math import factorial, sin, cos, pi, e, radians
 
 import tatsu
 
 
 class CalcBasicSemantics(object):
+    def math_pi(self, ast):
+        return pi
+
+    def math_e(self, ast):
+        return e
+
     def number_float(self, ast):
         return float(ast)
 
@@ -38,6 +44,22 @@ class CalcBasicSemantics(object):
             return ast
         elif ast.op == "!":
             return factorial(ast.middle)
+        else:
+            raise Exception("я такого оператора не знаю", ast.op)
+
+    def math_sin(self, ast):
+        if not isinstance(ast, tatsu.ast.AST):
+            return ast
+        elif ast.op == "sin(":
+            return sin(radians(ast.middle))
+        else:
+            raise Exception("я такого оператора не знаю", ast.op)
+
+    def math_cos(self, ast):
+        if not isinstance(ast, tatsu.ast.AST):
+            return ast
+        elif ast.op == "cos(":
+            return cos(radians(ast.middle))
         else:
             raise Exception("я такого оператора не знаю", ast.op)
 

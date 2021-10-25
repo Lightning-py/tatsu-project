@@ -19,9 +19,12 @@ term
     | left:term op:'*' ~ right:factor
     | left:term op:'/' ~ right:factor
     | math_factorial
+    | math_sin
+    | math_cos
     | root
     | factor
     ;
+
 
 math_factorial
     =
@@ -33,13 +36,34 @@ root
     left:factor op:'root(' ~ right:factor ')'
     ;
 
+math_sin
+        =
+        op:'sin(' ~ middle:factor ')'
+        ;
+
+math_cos
+        =
+        op:'cos(' ~ middle:factor ')'
+        ;
+
 factor
     =
     | '(' ~ @:expression ')'
     | number_float
     | number_int
+    | math_pi
+    | math_e
     ;
 
+math_pi
+    =
+    op:'pi'
+    ;
+
+math_e
+    =
+    op:'e'
+    ;
 
 number_float
     =
