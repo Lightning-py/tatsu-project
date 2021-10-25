@@ -30,7 +30,7 @@ math_factorial
 
 root
     =
-    left:factor op:'sqr(' ~ right:factor ')'
+    left:factor op:'root(' ~ right:factor ')'
     ;
 
 factor
