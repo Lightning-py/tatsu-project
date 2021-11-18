@@ -1,10 +1,12 @@
 @@grammar::CALC
-@@eol_comments :: /#([^\n]*?)$/
+@@eol_comments :: /\/\/.+/
 
 start
     =
     expression $
     ;
+    
+
 
 expression
     =
@@ -18,59 +20,27 @@ term
     | left:term op:'**' ~ right:factor
     | left:term op:'*' ~ right:factor
     | left:term op:'/' ~ right:factor
-    | math_factorial
-    | math_sin
-    | math_cos
-    | root
+    | variable_name:factor op:'=' ~ variable_value:factor
     | factor
     ;
 
 
-math_factorial
-    =
-    op:'!' ~ middle:factor
-    ;
-
-root
-    =
-    left:factor op:'root(' ~ right:factor ')'
-    ;
-
-math_sin
-        =
-        op:'sin(' ~ middle:factor ')'
-        ;
-
-math_cos
-        =
-        op:'cos(' ~ middle:factor ')'
-        ;
 
 factor
     =
     | '(' ~ @:expression ')'
-    | number_float
-    | number_int
-    | math_pi
-    | math_e
+    | element
     ;
 
-math_pi
+
+
+
+
+element
     =
-    op:'pi'
+    | /\d+/
+    | /[^1-9][A-z]+/
+    | /[^1-9][A-z]+_\d+/
+    | /./
     ;
 
-math_e
-    =
-    op:'e'
-    ;
-
-number_float
-    =
-    /\d+\.\d+/
-    ;
-
-number_int
-    =
-    /\d+/
-    ;
