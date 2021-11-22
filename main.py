@@ -22,15 +22,10 @@ class CalcBasicSemantics(object):
     def element(self, ast):
         if ast == 'alpha':
             return '⍺'
-        elif ast == '/alpha':
-            return 'alpha'
         elif ast == 'betta':
-            return 'ᵝ'
-        elif ast == '/betta':
-            return 'betta'
-        else:
-            return ast
-
+            return 'β'
+        elif ast[0] == '/':
+            return ast[1 : ]
 
     def term(self, ast):
         if not isinstance(ast, tatsu.ast.AST):
