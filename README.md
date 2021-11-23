@@ -1,4 +1,4 @@
-# $AlTeX
+# AlTeX
 
 Язык с упрощённым синтаксисом и структурой <img src="https://latex.codecogs.com/svg.latex?\fn_phv&space;LaTeX" title="LaTeX" />, транслируемый в код <img src="https://latex.codecogs.com/svg.latex?\fn_phv&space;LaTeX" title="LaTeX" />.
 
