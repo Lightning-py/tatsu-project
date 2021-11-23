@@ -1,5 +1,6 @@
 @@grammar::AlTeX
-@@eol_comments :: /\/\/.+/
+@@comments :: /#([^\n]*?)$/
+@@parseinfo :: True
 
 start
     =
@@ -20,23 +21,19 @@ term
     | left:term op:'**' ~ right:factor
     | left:term op:'*' ~ right:factor
     | left:term op:'/' ~ right:factor
-    | variable_name:factor op:'=' ~ variable_value:factor
     | factor
     ;
 
 
 factor
     =
-    | '(' ~ @:expression ')'
+    | '(' @:expression ~ ')'
     | symbol
+    | number
     ;
 
 
-symbol
-    =
-    | /\d+/
-    | /[^1-9][A-z]+/
-    | /[^1-9][A-z]+_\d+/
-    | /./
-    ;
+symbol = /[A-z]+/;
 
+
+number = /[+-]?[0-9]*(\.)?[0-9]*/;
