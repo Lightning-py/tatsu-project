@@ -1,11 +1,10 @@
-@@grammar::CALC
+@@grammar::AlTeX
 @@eol_comments :: /\/\/.+/
 
 start
     =
     expression $
     ;
-    
 
 
 expression
@@ -14,6 +13,7 @@ expression
     | left:expression op:'-' ~ right:term
     | term
     ;
+
 
 term
     =
@@ -25,18 +25,14 @@ term
     ;
 
 
-
 factor
     =
     | '(' ~ @:expression ')'
-    | element
+    | symbol
     ;
 
 
-
-
-
-element
+symbol
     =
     | /\d+/
     | /[^1-9][A-z]+/

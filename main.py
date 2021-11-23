@@ -1,52 +1,21 @@
 from codecs import open
 from pprint import pprint
 
-from math import factorial, sin, cos, pi, e, radians
-
-
 import tatsu
 
-''' 
-я придумал небольшой костыль, теперь вместо того чтобы создавать python переменные мы будем просто создавать словарь,
-в котором будем хранить все переменные вместе с именами
-'''
+from symbols import greek_letters
 
-variables_dict = {}
 
-class CalcBasicSemantics(object):
-
+class AlTeXSemantics(object):
     def temporary_string(self, ast):
         return ast
 
-
-    def element(self, ast):
-        
-        symbols = [
-            'alpha',
-            'betta',
-            'gamma',
-            'Gamma',
-            'Delta',
-            'delta',
-            'epsilon',
-            'varepsilon',
-            'zeta',
-            'eta',
-            'Theta',
-            'theta',
-            'vartheta',
-            'iota',
-
-        ]
-
-
+    def symbol(self, ast):
 
         print(ast)
 
-        if ast in symbols:
-            return (chr(92) + ast)
-        elif ast[0] == '/':
-            return ast[1 : ]
+        if ast in greek_letters:
+            return ast
         else:
             return ast
 
@@ -54,51 +23,41 @@ class CalcBasicSemantics(object):
         if not isinstance(ast, tatsu.ast.AST):
             return ast
         elif ast.op == "*":
-            return f'{ast.left} * {ast.right}'
+            return f"{ast.left} {ast.right}"
         elif ast.op == "/":
-            return f'{ast.left} / {ast.right}'
+            return f"frac{{{ast.left}}}{{{ast.right}}}"
         elif ast.op == "**":
-            return f'{ast.left} ** {ast.right}'
-        elif ast.op == '=':
-            variables_dict[ast.variable_name] = ast.variable_value
-            return f'nice bro, variable with name: {ast.variable_name} and value: {ast.variable_value} and type: {type(ast.variable_value)}'
+            return f"{ast.left} ^ {ast.right}"
+        elif ast.op == "=":
+            return f"nice bro, variable with name: {ast.variable_name} and value: {ast.variable_value} and type: {type(ast.variable_value)}"
         else:
-            raise Exception("я такого оператора не знаю", ast.op)
-
+            raise Exception("Operator does not exist", ast.op)
 
     def expression(self, ast):
         if not isinstance(ast, tatsu.ast.AST):
             return ast
         elif ast.op == "+":
-            return f'({ast.left} + {ast.right})'
+            return f"({ast.left} + {ast.right})"
         elif ast.op == "-":
-            return f'({ast.left} - {ast.right})'
-
+            return f"({ast.left} - {ast.right})"
         else:
-            raise Exception("Unknown operator", ast.op)
+            raise Exception("Operator does not exist", ast.op)
 
 
-def parse_with_basic_semantics(input_file: str):
-    with open(input_file) as file:
-        grammar = open("calc.ebnf").read()
+def parse_with_basic_semantics(filename: str):
+    with open(filename, "r") as file:
+        with open("altex.ebnf") as gram:
+            grammar = gram.read()
 
-        parser = tatsu.compile(grammar)
+            parser = tatsu.compile(grammar)
 
-        #### вот тут выполнение кода из файла, оно по умолчанию идет
-        for line in file.readlines():
-            ast = parser.parse(line.replace('\n', ''), semantics=CalcBasicSemantics())
-            pprint(ast, width=20, indent=4)
-            print()
-        ####
-        
-        #### вот тут если надо выполнение кода из консольки, ну мало ли там, отлаживать что-то надо будет
-            # ast = parser.parse(input("ваше выражение: "), semantics=CalcBasicSemantics())
-            # pprint(ast, width=20, indent=4)
-        ####
-
-        
+            for line in file.readlines():
+                ast = parser.parse(line, semantics=AlTeXSemantics())
+                pprint(ast)  # , width=20, indent=4)
+                print()
 
 
 if __name__ == "__main__":
-    parse_with_basic_semantics(input('input filename: '))
-    print(f'variables dictionary:\n{variables_dict}')
+    with open("test_file.atex") as src:
+        print("Source:", f"{src.read()}\n", sep="\n")
+    parse_with_basic_semantics("test_file.atex")
