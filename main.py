@@ -20,12 +20,35 @@ class CalcBasicSemantics(object):
 
 
     def element(self, ast):
-        if ast == 'alpha':
-            return '⍺'
-        elif ast == 'betta':
-            return 'β'
+        
+        symbols = [
+            'alpha',
+            'betta',
+            'gamma',
+            'Gamma',
+            'Delta',
+            'delta',
+            'epsilon',
+            'varepsilon',
+            'zeta',
+            'eta',
+            'Theta',
+            'theta',
+            'vartheta',
+            'iota',
+
+        ]
+
+
+
+        print(ast)
+
+        if ast in symbols:
+            return (chr(92) + ast)
         elif ast[0] == '/':
             return ast[1 : ]
+        else:
+            return ast
 
     def term(self, ast):
         if not isinstance(ast, tatsu.ast.AST):
