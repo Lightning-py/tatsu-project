@@ -4,7 +4,8 @@
 
 start
     =
-    expression $
+    |   expression
+    |   block
     ;
 
 
@@ -32,6 +33,31 @@ factor
     | number
     ;
 
+block
+    =
+    block_def ~ block_content $
+    ;
+
+block_def
+    =
+    (* имя_блока (параметры_блока):ньюлайн *)
+    name:symbol ~ '(' params ')' ~ ':' NEWLINE $
+    ;
+
+params
+    =
+    {expression}+
+    ;
+
+block_content
+    =
+    NEWLINE INDENT {expression}+
+    ;
+
+(* matrix_def
+    =
+    'matrix' ~ '(' ~ height:number ~ ';' ~ width:number ~ ')' ~ ':' ~ block_content $
+    ; *)
 
 symbol = /[A-z]+/;
 

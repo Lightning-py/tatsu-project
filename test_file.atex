@@ -1,1 +1,2 @@
-((alpha * 2.25) - 33) / 16 + beta - delta ** 2
+matrix ( 1 , 2):
+    1 & 2

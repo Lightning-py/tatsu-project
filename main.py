@@ -37,6 +37,15 @@ class AlTeXSemantics(object):
         else:
             raise Exception("Operator does not exist", ast.op)
 
+    def block_def(self, ast):
+        return f'{ast.name} ( {ast.params} ):\n'
+    
+    def block_content(self, ast):
+        return ast
+
+    def block(self, ast):
+        return f'{ast.block_def}\n{ast.block_content}'
+        
 
 def parse_with_basic_semantics(filename: str, output: Optional[str] = None):
     with open(filename, "r") as file:
